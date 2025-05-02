@@ -1,29 +1,47 @@
 using System;
+using System.Collections.Generic;
 
 namespace PlayerManager1
 {
     public class PlayerManager
     {
-        private Player[] players;
-        private int playerCount = 0;
-        private const int maxPlayers = 100; // maximum number of players
+        private List<Player> players;
 
         public PlayerManager()
         {
-            players = new Player[maxPlayers];
+            players = new List<Player>();
         }
 
         public void AddPlayer(string name, int score)
         {
-            if (playerCount < maxPlayers)
+            players.Add(new Player(name, score));
+            Console.WriteLine($"\nPlayer {name} added!\n");
+        }
+
+        public IEnumerable<Player> GetPlayers()
+        {
+            return players;
+        }
+
+        /// <summary>
+        /// Get players with a score higher than a given value.
+        /// </summary>
+        /// <param name="minScore">Minimum score players should have.</param>
+        /// <returns>
+        /// An enumerable of players with a score higher than the given value.
+        /// </returns>
+        public IEnumerable<Player> GetPlayersWithScoreGreaterThan(int minScore)
+        {
+            List<Player> playersWithScoreGreaterThan = new List<Player>();
+
+            foreach (Player player in players)
             {
-                players[playerCount] = new Player(name, score);
-                playerCount++;
+                if (player.Score > minScore)
+                {
+                    playersWithScoreGreaterThan.Add(player);
+                }
             }
-            else
-            {
-                Console.WriteLine("Player limit reached. Cannot add more players.");
-            }
+            return playersWithScoreGreaterThan;
         }
     }
 }

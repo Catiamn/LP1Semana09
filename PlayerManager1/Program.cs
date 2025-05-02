@@ -8,17 +8,13 @@ namespace PlayerManager1 // >>> Change to PlayerManager2 for exercise 4 <<< //
     /// </summary>
     public class Program
     {
-        /// <summary>
-        /// The list of all players.
-        /// </summary>
-        private List<Player> playerList;
+                private PlayerManager playerManager;
 
         /// <summary>
         /// Program begins here.
         /// </summary>
         private static void Main()
         {
-
             Program prog = new Program();
             prog.Start();
         }
@@ -28,10 +24,9 @@ namespace PlayerManager1 // >>> Change to PlayerManager2 for exercise 4 <<< //
         /// </summary>
         private Program()
         {
-            playerList = new List<Player>() {
-                new Player("Best player ever", 100),
-                new Player("An even better player", 500)
-            };
+            playerManager = new PlayerManager();
+            playerManager.AddPlayer("Best player ever", 100);
+            playerManager.AddPlayer("An even better player", 500);
         }
 
         /// <summary>
@@ -39,7 +34,6 @@ namespace PlayerManager1 // >>> Change to PlayerManager2 for exercise 4 <<< //
         /// </summary>
         private void Start()
         {
-
             string option;
 
             //loop
@@ -55,7 +49,7 @@ namespace PlayerManager1 // >>> Change to PlayerManager2 for exercise 4 <<< //
                         InsertPlayer();
                         break;
                     case "2":
-                        ListPlayers(playerList);
+                        ListPlayers(playerManager.GetPlayers());
                         break;
                     case "3":
                         ListPlayersWithScoreGreaterThan();
@@ -71,7 +65,6 @@ namespace PlayerManager1 // >>> Change to PlayerManager2 for exercise 4 <<< //
                 Console.Write("\nPress any key to continue...");
                 Console.ReadKey(true);
                 Console.WriteLine("\n");
-
                 
             } while (option != "4");
         }
@@ -89,8 +82,7 @@ namespace PlayerManager1 // >>> Change to PlayerManager2 for exercise 4 <<< //
             Console.WriteLine("4. Quit the program\n");
             Console.WriteLine(">>> Press 1, 2, 3 or 4 <<<\n"); 
             Console.Write("Please choose an option: ");
-            
-        }
+                    }
 
         /// <summary>
         /// Inserts a new player in the player list.
@@ -102,14 +94,10 @@ namespace PlayerManager1 // >>> Change to PlayerManager2 for exercise 4 <<< //
             string name = Console.ReadLine();
             Console.Write("Enter player score: ");
             string scoreStr = Console.ReadLine();
-
             
             if (int.TryParse(scoreStr, out int score))
             {
-                // creates a new player and adds to the list
-                Player newPlayer = new Player(name, score);
-                playerList.Add(newPlayer);
-                Console.WriteLine($"\n>>> Player {name} added! <<<\n");
+                playerManager.AddPlayer(name, score);
             }
             else
             {
@@ -148,37 +136,13 @@ namespace PlayerManager1 // >>> Change to PlayerManager2 for exercise 4 <<< //
 
             if (int.TryParse(minScoreStr, out int minScore))
             {                
-                IEnumerable<Player> playersWithScoreGreaterThan = GetPlayersWithScoreGreaterThan(minScore);
-
-                //list the players
+                IEnumerable<Player> playersWithScoreGreaterThan = playerManager.GetPlayersWithScoreGreaterThan(minScore);
                 ListPlayers(playersWithScoreGreaterThan);
             }
             else
             {
                 Console.Error.WriteLine("\n>>> Invalid score! <<<\n");
             }
-        }
-
-        /// <summary>
-        /// Get players with a score higher than a given value.
-        /// </summary>
-        /// <param name="minScore">Minimum score players should have.</param>
-        /// <returns>
-        /// An enumerable of players with a score higher than the given value.
-        /// </returns>
-        private IEnumerable<Player> GetPlayersWithScoreGreaterThan(int minScore)
-        {
-
-            List<Player> playersWithScoreGreaterThan = new List<Player>();
-
-            foreach (Player player in playerList)
-            {
-                if (player.Score > minScore)
-                {
-                    playersWithScoreGreaterThan.Add(player);
-                }
-            }
-            return playersWithScoreGreaterThan;
         }
     }
 }
