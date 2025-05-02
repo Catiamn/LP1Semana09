@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PlayerManager3 // >>> Change to PlayerManager2 for exercise 4 <<< //
 {
@@ -116,9 +117,11 @@ namespace PlayerManager3 // >>> Change to PlayerManager2 for exercise 4 <<< //
         /// </param>
         private static void ListPlayers(IEnumerable<Player> playersToList)
         {
+            var sortedPlayers = playersToList.OrderByDescending(player => player.Score);
+
             // show players 
             Console.WriteLine("\nList of players:\n");
-            foreach (Player player in playersToList)
+            foreach (Player player in sortedPlayers)
             {
                 Console.WriteLine(player.ToString());
             }

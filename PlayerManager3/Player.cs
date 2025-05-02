@@ -2,12 +2,13 @@ using System;
 
 namespace PlayerManager3
 {
-    public class Player
+    public class Player : IComparable<Player>
     {
         //readonly, no use of set;
         public string Name { get; }
         public int Score { get; }
 
+        
 
         //constructor, aka same name as class, no return type
         public Player(string name, int score)
@@ -16,7 +17,13 @@ namespace PlayerManager3
             Score = score;
         }
 
-        // readable output of the Player object
+
+        public int CompareTo(Player other)
+        {
+            if (other == null) return 1; 
+            return Score.CompareTo(other.Score); //compare scores
+        }
+
         public override string ToString()
         {
             return $"Name: {Name}, Score: {Score}";
