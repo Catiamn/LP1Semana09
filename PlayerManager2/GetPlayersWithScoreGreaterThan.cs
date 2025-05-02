@@ -20,7 +20,10 @@ namespace PlayerManager2
 
         public IEnumerable<Player> GetPlayers()
         {
-            return players;
+            foreach (Player player in players)
+            {
+                yield return player;
+            }
         }
 
         /// <summary>
@@ -32,16 +35,13 @@ namespace PlayerManager2
         /// </returns>
         public IEnumerable<Player> GetPlayersWithScoreGreaterThan(int minScore)
         {
-            List<Player> playersWithScoreGreaterThan = new List<Player>();
-
             foreach (Player player in players)
             {
                 if (player.Score > minScore)
                 {
-                    playersWithScoreGreaterThan.Add(player);
+                    yield return player; // use yield return to return each player one by one
                 }
             }
-            return playersWithScoreGreaterThan;
         }
     }
 }
