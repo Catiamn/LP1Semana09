@@ -9,7 +9,7 @@ namespace PlayerManager4 // >>> Change to PlayerManager2 for exercise 4 <<< //
     /// </summary>
     public class Program
     {
-                private PlayerManager playerManager;
+        private PlayerManager playerManager;
 
         /// <summary>
         /// Program begins here.
@@ -36,13 +36,11 @@ namespace PlayerManager4 // >>> Change to PlayerManager2 for exercise 4 <<< //
         private void Start()
         {
             string option;
-
             //loop
             do
             {
                 ShowMenu();
                 option = Console.ReadLine();
-
 
                 switch (option)
                 {
@@ -50,12 +48,15 @@ namespace PlayerManager4 // >>> Change to PlayerManager2 for exercise 4 <<< //
                         InsertPlayer();
                         break;
                     case "2":
-                        ListPlayers(playerManager.GetPlayers());
+                        ListPlayers(playerManager.GetPlayers(), "score");
                         break;
                     case "3":
-                        ListPlayersWithScoreGreaterThan();
+                        ListPlayers(playerManager.GetPlayers(), "nameAsc");
                         break;
                     case "4":
+                        ListPlayers(playerManager.GetPlayers(), "nameDesc");
+                        break;
+                    case "5":
                         Console.WriteLine("Quitting the program :(");
                         continue;
                     default:
@@ -66,8 +67,8 @@ namespace PlayerManager4 // >>> Change to PlayerManager2 for exercise 4 <<< //
                 Console.Write("\nPress any key to continue...");
                 Console.ReadKey(true);
                 Console.WriteLine("\n");
-                
-            } while (option != "4");
+
+            } while (option != "5");
         }
 
         /// <summary>
@@ -78,12 +79,13 @@ namespace PlayerManager4 // >>> Change to PlayerManager2 for exercise 4 <<< //
             Console.Clear();
             Console.WriteLine("Player listing program\n");
             Console.WriteLine("1. Insert a new player");
-            Console.WriteLine("2. List all players");
-            Console.WriteLine("3. List players with score greater than a given value");
-            Console.WriteLine("4. Quit the program\n");
-            Console.WriteLine(">>> Press 1, 2, 3 or 4 <<<\n"); 
+            Console.WriteLine("2. List players by score (default is descending)");
+            Console.WriteLine("3. List players by name (ascending)");
+            Console.WriteLine("4. List players by name (descending)");
+            Console.WriteLine("5. Quit the program :O \n");
+            Console.WriteLine(">>> Press 1, 2, 3, 4 or 5 <<<\n"); 
             Console.Write("Please choose an option: ");
-                    }
+        }
 
         /// <summary>
         /// Inserts a new player in the player list.
@@ -115,9 +117,22 @@ namespace PlayerManager4 // >>> Change to PlayerManager2 for exercise 4 <<< //
         /// <param name="playersToList">
         /// An enumerable object of players to show.
         /// </param>
-        private static void ListPlayers(IEnumerable<Player> playersToList)
+        private static void ListPlayers(IEnumerable<Player> playersToList, string orderBy)
         {
-            var sortedPlayers = playersToList.OrderByDescending(player => player.Score);
+            IEnumerable<Player> sortedPlayers;
+
+            switch (orderBy)
+            {
+                case "nameAsc":
+                    sortedPlayers = playersToList.OrderBy(player => player, new CompareByName(true));
+                    break;
+                case "nameDesc":
+                    sortedPlayers = playersToList.OrderBy(player => player, new CompareByName(false));
+                    break;
+                default: // default is descending
+                    sortedPlayers = playersToList.OrderByDescending(player => player.Score);
+                    break;
+            }
 
             // show players 
             Console.WriteLine("\nList of players:\n");
@@ -133,14 +148,14 @@ namespace PlayerManager4 // >>> Change to PlayerManager2 for exercise 4 <<< //
         /// </summary>
         private void ListPlayersWithScoreGreaterThan()
         {
-            // score value
+            // Ask the user for the minimum score
             Console.Write("Enter minimum score: ");
             string minScoreStr = Console.ReadLine();
 
             if (int.TryParse(minScoreStr, out int minScore))
-            {                
+            {
                 IEnumerable<Player> playersWithScoreGreaterThan = playerManager.GetPlayersWithScoreGreaterThan(minScore);
-                ListPlayers(playersWithScoreGreaterThan);
+                ListPlayers(playersWithScoreGreaterThan, "score");
             }
             else
             {
