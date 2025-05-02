@@ -9,7 +9,7 @@ namespace PlayerManager4
 
         public CompareByName(bool ascending)
         {
-            this.ascending = ascending;
+            this.ascending = ascending; //use of "this" is not needed but its good practice :D
         }
 
         public int Compare(Player x, Player y)

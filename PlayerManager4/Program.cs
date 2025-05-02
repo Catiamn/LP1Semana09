@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PlayerManager4 // >>> Change to PlayerManager2 for exercise 4 <<< //
+namespace PlayerManager4 
 {
     /// <summary>
     /// The player listing program.
@@ -36,7 +36,8 @@ namespace PlayerManager4 // >>> Change to PlayerManager2 for exercise 4 <<< //
         private void Start()
         {
             string option;
-            //loop
+
+            //main menu loop
             do
             {
                 ShowMenu();
@@ -63,7 +64,6 @@ namespace PlayerManager4 // >>> Change to PlayerManager2 for exercise 4 <<< //
                         Console.Error.WriteLine("We don't recognize that option! Sorry! D: ");
                         break;
                 }
-
                 Console.Write("\nPress any key to continue...");
                 Console.ReadKey(true);
                 Console.WriteLine("\n");
@@ -104,7 +104,7 @@ namespace PlayerManager4 // >>> Change to PlayerManager2 for exercise 4 <<< //
             }
             else
             {
-                Console.Error.WriteLine("\n>>> Invalid score! <<<\n");
+                Console.Error.WriteLine("Doesn't seem like a valid score :/ \n");
             }
         }
 
